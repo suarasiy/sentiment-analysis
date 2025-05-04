@@ -1,4 +1,19 @@
 from __future__ import annotations
+import time
+
+# ---------------------------------------------------------------------------- #
+#                                     Utils                                    #
+# ---------------------------------------------------------------------------- #
+
+def timer_crawl (func: callable) -> callable:
+    def wrapper (*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(kwargs['options'].get('CRAWL_NAME', '-'))
+        print('Elapsed time: {:.2f} seconds'.format(end - start))
+        return result
+    return wrapper
 
 # ---------------------------------------------------------------------------- #
 #                                Utils Crawling                                #
@@ -17,5 +32,5 @@ def getSingleValueInt (value: int |list[int], defaultValue: int = 0) -> int:
         if isinstance(value, list) and len(value) == 0: pass
         return value
     except ValueError:
-        return defaultValue
         print('Value must be either int or int[].')
+        return defaultValue
